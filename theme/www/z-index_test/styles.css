@@ -1,0 +1,38 @@
+.one {
+	/* z-index: -10; */
+	/* overflow-y: auto; */
+
+	position: relative;
+
+	width: 100px;
+	height: 200px;
+	border: 5px solid red;
+	background: red;
+}
+
+.two {
+	z-index: -10;
+
+	position: absolute;
+	top: 45px;
+	left: 45px;
+
+	width: 100px;
+	height: 200px;
+	border: 5px solid blue;
+	background: blue;
+}
+
+.three {
+	z-index: -5;
+
+	position: absolute;
+	top: 150px;
+	left: 35px;
+
+	width: 100px;
+	height: 200px;
+	border: 5px solid green;
+	background: green;
+
+}

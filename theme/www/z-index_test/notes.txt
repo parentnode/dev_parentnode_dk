@@ -1,0 +1,7 @@
+Når .one ikke har noget z-index regeres den af de almindelige stackingregler, dvs. .one etablerer ikke nogen selvstændig stackingkontekst.
+
+Når .two og .three til gengæld får et z-index, hæver de sig over de almindelige stackingregler og placerer sig (tilsyneladende) i den samme "nulte-ordens" stackingkontekst. Derfor er det muligt at få .three til at ligge mellem .one og .two – man placerer .three bag .two, men .three og .two befinder sig altid over .one, uagtet HTML-hierarkiet. 
+
+Samtidig skaber .two og .three hver deres stackingkontekst, som skaber et lokalt z-index-scope for eventuelle HTML-børn.
+
+Af samme grund påvirker det stackingen, hvis man giver .one et z-index. Dermed hæves det op i nulte-ordens-stackingkonteksten og bliver ligeværdig med .three, men overordnet .two.  
