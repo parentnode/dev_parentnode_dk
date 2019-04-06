@@ -1,0 +1,373 @@
+<html>
+<head>
+	<script>
+
+		var degrees = 0, current_degrees;
+		var container, cube_a, cube_b, cube_c, swipe_mode, swipe_start, duration;
+
+
+		// Rotate to the left
+		function turnLeft(progress) {
+			// console.log("turnLeft", progress);
+
+			degrees += 90;
+
+			if(progress) {
+				duration = 1 - progress;
+			}
+			else {
+				duration = 1;
+			}
+
+			cube_a.style.transition = "transform "+duration+"s ease-in-out";
+			cube_a.style.transform = "rotateY("+degrees+"deg)";
+
+			if(progress > 0.5) {
+				scaleUp.call(container, progress);
+			}
+			else {
+				scaleDown(progress);
+			}
+		}
+
+
+
+		// Rotate to the right
+		function turnRight(progress) {
+			// console.log("turnRight", progress);
+			degrees -= 90;
+
+			if(progress) {
+				duration = 1 + progress;
+			}
+			else {
+				duration = 1;
+			}
+
+			cube_a.style.transition = "transform "+duration+"s ease-in-out";
+			cube_a.style.transform = "rotateY("+degrees+"deg)";
+
+			if(progress < -0.5) {
+				scaleUp.call(container, progress);
+			}
+			else {
+				scaleDown(progress);
+			}
+		}
+
+
+
+		function scaleDown(progress) {
+
+			container.addEventListener("transitionend", scaleUp, "false");
+
+			if(progress) {
+				duration = 0.5 - Math.abs(progress);
+			}
+			else {
+				duration = 0.5;
+			}
+
+			// console.log("scaleDown", progress, duration);
+
+			container.style.transition = "transform "+duration+"s ease-in-out";
+			container.style.transform = "scale(0.90)";
+		}
+
+		function scaleUp(progress) {
+			// console.log("scaleUp", progress);
+
+			this.removeEventListener("transitionend", scaleUp, "false");
+
+			if(progress && !progress.timeStamp) {
+				duration = 0.5 - (Math.abs(progress) - 0.5);
+			}
+			else {
+				duration = 0.5;
+			}
+
+			this.style.transition = "transform "+duration+"s ease-in-out";
+			this.style.transform = "scale(1)";
+		}
+
+
+		// Auto rotate
+		function autorotate() {
+			turnRight();
+		}
+
+		// Cancel auto-rotation
+		function cancelAutorotate() {
+			// Stop listening for first interaction
+			document.body.removeEventListener("mousedown", cancelAutorotate, false);
+			document.body.removeEventListener("touchstart", cancelAutorotate, false);
+
+			// Stop auto-rotation
+			clearInterval(window.e_autorotate);
+		}
+
+		// Base initialization
+		function init() {
+			container = document.querySelector(".container");
+			cube_a = document.querySelector(".container .cube-a");
+			cube_b = document.querySelector(".container .cube-b");
+			cube_c = document.querySelector(".container .cube-c");
+
+
+			// Stop autorotate on first mousedown/touch start
+			document.body.addEventListener("mousedown", cancelAutorotate, false);
+			document.body.addEventListener("touchstart", cancelAutorotate, false);
+
+			// Start auto rotation
+			window.e_autorotate = setInterval(autorotate, 1500);
+
+			// enable swipe detection
+			initSwipeDetection();
+		}
+
+		function swipeModeOn(event) {
+			if(!swipe_mode) {
+				// console.log("swipemode on", event);
+
+				swipe_mode = true;
+
+				// Remember where swipe started
+				swipe_start = event.layerX;
+			}
+		}
+
+		function swipeModeOff(event) {
+			if(swipe_mode) {
+				// console.log("swipemode off");
+
+				swipe_mode = false;
+
+				progress = (event.layerX - swipe_start) / container.offsetWidth;
+
+				if(progress < 0) {
+					turnRight(progress);
+				}
+				else {
+					turnLeft(progress);
+				}
+
+				// Reset swipe start position
+				swipe_start = 0;
+			}
+		}
+
+		function swiping(event) {
+			if(swipe_mode) {
+				// console.log("swiping:" + swipe_mode);
+
+				progress = (event.layerX - swipe_start) / container.offsetWidth;
+				current_degrees = (degrees + (90 * progress));
+
+				cube_a.style.transition = "none";
+				cube_a.style.transform = "rotateY(" + current_degrees + "deg)";
+
+//				console.log(current_degrees, progress)
+				// console.log(progress)
+				test_progress = Math.abs(progress);
+
+				if(test_progress > 0.5) {
+					scale_factor = Math.abs(1 - ((0.5 + (1-test_progress)) * 2));
+				}
+				else {
+					scale_factor = Math.abs(1 - ((0.5 + test_progress) * 2));
+				}
+
+
+				// console.log("current_degrees:", current_degrees)
+				// console.log("scale_factor:", scale_factor)
+				// console.log(current_degrees, scale_factor)
+
+				container.style.transition = "none";
+				container.style.transform = "scale("+(1 - (0.1*scale_factor))+")";
+				
+			}
+		}
+
+		function initSwipeDetection() {
+			container.addEventListener("mousedown", swipeModeOn, false);
+			container.addEventListener("touchstart", swipeModeOn, false);
+
+			container.addEventListener("mouseout", swipeModeOff, false);
+			container.addEventListener("mouseup", swipeModeOff, false);
+			container.addEventListener("touchend", swipeModeOff, false);
+
+			container.addEventListener("touchmove", swiping, false);
+			container.addEventListener("mousemove", swiping, false);
+
+		}
+
+
+		// Run init when ready
+		window.addEventListener("load", init, false);
+	</script>
+	<style>
+		body {margin: 0px;}
+
+		#AnimatedBanner {
+			width: 300px;
+			height: 250px;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.container {
+			width: 300px;
+			height: 250px;
+			position: relative;
+			perspective: 1000px;
+		}
+
+		.container .cube {
+			position: absolute;
+			transform-style: preserve-3d;
+			pointer-events: none;
+			transform-origin: 50% 50%;
+		}
+
+
+		.container .cube-a {
+			width: 340px;
+			height: 290px;
+			top: -20px;
+			left: -20px;
+		}
+
+		.container .cube-b {
+			width: 300px;
+			height: 250px;
+			top: 20px;
+			left: 20px;
+		}
+
+		.container .cube-c {
+			width: 260px;
+			height: 210px;
+			top: 20px;
+			left: 20px;
+		}
+
+		.container .cube div.side {
+			position: absolute;
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			transform-origin: 50% 50%;
+		}
+		.container .cube img {
+			height: 100%;
+			width: 100%;
+			border: none;
+			display: block;
+		}
+
+		.container .cube div.side {
+			backface-visibility: hidden;
+		}
+
+
+
+		.container .cube-a .front {
+			transform: rotateY( 0 ) translateZ( 170px );
+		}
+		.container .cube-a .back {
+			transform: rotateY( -180deg ) translateZ( 170px );
+		}
+		.container .cube-a .right {
+			transform: rotateY( 90deg ) translateZ( 170px );
+		}
+		.container .cube-a .left {
+			transform: rotateY( -90deg ) translateZ( 170px );
+		}
+
+		/* START SHOWING FRONT */
+		.container .cube-a {
+			transform: translateZ( 0px ) rotateY( 0 );
+		}
+
+
+		.container .cube-b .front {
+			transform: rotateY( 0 ) translateZ( 150px );
+		}
+		.container .cube-b .back {
+			transform: rotateY( -180deg ) translateZ( 150px );
+		}
+		.container .cube-b .right {
+			transform: rotateY( 90deg ) translateZ( 150px );
+		}
+		.container .cube-b .left {
+			transform: rotateY( -90deg ) translateZ( 150px );
+		}
+
+		/* START SHOWING FRONT */
+		.container .cube-b.show-front {
+			transform: translateZ( 0 ) rotateY( 0 );
+		}
+
+
+		.container .cube-c .front {
+			transform: rotateY( 0 ) translateZ( 130px );
+		}
+		.container .cube-c .back {
+			transform: rotateY( 180deg ) translateZ( 130px );
+		}
+		.container .cube-c .right {
+			transform: rotateY( 90deg ) translateZ( 130px );
+		}
+		.container .cube-c .left {
+			transform: rotateY( -90deg ) translateZ( 130px );
+		}
+
+		/* START SHOWING FRONT */
+		.container .cube-c.show-front {
+			transform: translateZ( 0 ) rotateY( 0 );
+		}
+
+	</style>
+</head>
+<body>
+
+<div id="AnimatedBanner">
+	<div class="container">
+
+		<div class="cube-a cube">
+			<div class="side front"><img src="images/product1_btn.png" /></div>
+			<div class="side back"><img src="images/product3_btn.png" /></div>
+			<div class="side right"><img src="images/product2_btn.png" /></div>
+			<div class="side left"><img src="images/product2_btn.png" /></div>
+
+			<div class="cube-b cube">
+				<div class="side front"><img src="images/product1_txt.png" /></div>
+				<div class="side back"><img src="images/product3_txt.png" /></div>
+				<div class="side right"><img src="images/product2_txt.png" /></div>
+				<div class="side left"><img src="images/product2_txt.png" /></div>
+
+				<div class="cube-c cube">
+					<div class="side front"><img src="images/product1.png" /></div>
+					<div class="side back"><img src="images/product3.png" /></div>
+					<div class="side right"><img src="images/product2.png" /></div>
+					<div class="side left"><img src="images/product3.png" /></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<br />
+<br />
+<br />
+<br />
+
+<ul>
+	<li><a href="javascript:turnLeft();">Turn left</a></li>
+	<li><a href="javascript:turnRight();">Turn right</a></li>
+</ul>
+
+
+</body>
+</html>
