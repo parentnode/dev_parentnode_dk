@@ -1,0 +1,22 @@
+body {
+	background-color: blue;
+	height: 5000px;
+	margin: 0;
+
+	overflow: hidden;
+}
+
+body div#overlay {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: red;
+}
+
+body div#overlay > p {
+	height: 1000px;
+	width: 50%;
+	margin: 0 auto;
+	border: 10px solid gold;
+	background: green;
+}
