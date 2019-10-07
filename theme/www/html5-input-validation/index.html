@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript">
+	</script>
+</head>
+<body>
+
+<form name="upload" action="upload.php" method="post" enctype="multipart/form-data">
+
+	<fieldset>
+
+		<label for="number-a">Number:</label>
+		<input type="number" pattern="[123\.]+" id="number-a" name="number-a" />
+
+		<label for="string-b">String:</label>
+		<input type="text" pattern="[abc]+" id="string-b" name="string-b[]" />
+
+		<button class="fright" type="submit">Save</button>
+	</fieldset>
+
+</form>
+
+</body>
+</html>

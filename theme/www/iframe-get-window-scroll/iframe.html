@@ -1,0 +1,15 @@
+<html>
+<body>
+	
+<script>
+	console.log("says hallo");
+
+window.parent.addEventListener('scroll', function(event) {
+	var myViewPortPos = window.parent.document.getElementById("test2").getBoundingClientRect();
+
+	console.log("iframe says:", myViewPortPos, event);
+});
+	
+</script>
+</body>
+</html>
