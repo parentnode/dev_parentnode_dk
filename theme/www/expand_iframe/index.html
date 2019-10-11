@@ -1,24 +1,43 @@
-<button style="width: 200px; height: 50px;" onclick="expandIframe('#iframe')">Expand iframe</button>
+<button style="width: 200px; height: 50px;" onclick="expandIframe(iframe)">Expand iframe</button>
 
-<iframe id="iframe" style="width: 100%; height: 100%; height: 0;" src="http://dev-parentnode.local/expand_iframe/iframe.html" frameborder="0"></iframe>
+<iframe id="iframe" style="width: 100%; height: 100%; height: 0;" src="http://dev-parentnode-alt.local/iframe-resize/iframe.html" frameborder="0"></iframe>
 
 <script>
 
+
+	var iframe = document.querySelector("#iframe");
+
+
+	window.addEventListener('message', function(event) {
+
+		if (!iframe._expanded) {
+			window.iframeHeight = event.data.height;
+		}
+
+		else {
+			resizeIframe(iframe, event.data.height);
+		}
+	});
+
+
 	function expandIframe(iframe) {
-		var iframe = document.querySelector(iframe);
 
-		var doc = iframe.contentDocument || iframe.contentWindow.document;
+		if (typeof iframe === "string") {
+			var iframe = document.querySelector(iframe);
+		}
 
-		var docMargin = parseInt(window.getComputedStyle(doc.body).getPropertyValue("margin-top")) + parseInt(window.getComputedStyle(doc.body).getPropertyValue("margin-bottom"));
+		console.log(iframe);
 
-		var fullHeight = doc.body.offsetHeight + docMargin;
 
 		if (!iframe._expanded) {
 			iframe._expanded = true;
 
-			iframe.style.transition = "all 1s ease";
+			iframe.addEventListener("transitionend", function(event) {
+				iframe.style.transition = "";
+			});
 
-			iframe.style.height = fullHeight;
+			iframe.style.transition = "all 1s ease";
+			iframe.style.height = window.iframeHeight;
 		}
 
 
@@ -29,5 +48,16 @@
 			iframe.style.height = "0"
 		}
 	}
+
+
+	function resizeIframe(iframe, height) {
+
+		if (typeof iframe === "string") {
+			var iframe = document.querySelector(iframe);
+		}
+
+		iframe.style.height = height;
+	}
+
 
 </script>
