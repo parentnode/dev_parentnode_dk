@@ -1,0 +1,32 @@
+<button style="width: 200px; height: 50px;" onclick="expandIframe('#iframe')">Expand iframe</button>
+
+<iframe id="iframe" style="width: 100%; height: 100%; height: 0;" src="http://dev-parentnode.local/expand_iframe/iframe.html" frameborder="0"></iframe>
+
+<script>
+
+	function expandIframe(iframe) {
+		var iframe = document.querySelector(iframe);
+
+		var doc = iframe.contentDocument || iframe.contentWindow.document;
+		console.log(doc);
+
+		if (!iframe._expanded) {
+			iframe._expanded = true;
+
+			iframe.style.transition = "all 1s ease";
+
+			// iframe.style.height = "1000px"
+			console.log(doc.offsetHeight);
+
+		}
+
+
+		else {
+			iframe._expanded = false;
+
+			iframe.style.transition = "all 1s ease";
+			iframe.style.height = "0"
+		}
+	}
+
+</script>
