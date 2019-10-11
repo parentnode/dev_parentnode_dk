@@ -8,16 +8,17 @@
 		var iframe = document.querySelector(iframe);
 
 		var doc = iframe.contentDocument || iframe.contentWindow.document;
-		console.log(doc);
+
+		var docMargin = parseInt(window.getComputedStyle(doc.body).getPropertyValue("margin-top")) + parseInt(window.getComputedStyle(doc.body).getPropertyValue("margin-bottom"));
+
+		var fullHeight = doc.body.offsetHeight + docMargin;
 
 		if (!iframe._expanded) {
 			iframe._expanded = true;
 
 			iframe.style.transition = "all 1s ease";
 
-			iframe.style.height = doc.body.offsetHeight;
-			console.log(doc.body.offsetHeight);
-
+			iframe.style.height = fullHeight;
 		}
 
 
