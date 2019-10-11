@@ -1,21 +1,21 @@
-<button style="width: 200px; height: 50px;" onclick="expandIframe(iframe)">Expand iframe</button>
+<button style="width: 200px; height: 50px;" onclick="expandIframe(iframeToExpand)">Expand iframe</button>
 
 <iframe id="iframe" style="width: 100%; height: 100%; height: 0;" src="http://dev-parentnode-alt.local/iframe-resize/iframe.html" frameborder="0"></iframe>
 
 <script>
 
 
-	var iframe = document.querySelector("#iframe");
+	var iframeToExpand = document.querySelector("#iframe");
 
 
 	window.addEventListener('message', function(event) {
 
-		if (!iframe._expanded) {
+		if (!iframeToExpand._expanded) {
 			window.iframeHeight = event.data.height;
 		}
 
 		else {
-			resizeIframe(iframe, event.data.height);
+			resizeIframe(iframeToExpand, event.data.height);
 		}
 	});
 
