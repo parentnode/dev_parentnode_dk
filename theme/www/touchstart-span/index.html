@@ -8,22 +8,44 @@
 
 	<style>
 
+		span {
+			padding: 10px;
+			background: green;
+		}
+
+		a {
+			padding: 10px;
+			background: red;
+		}
+
 	</style>
 </head>
 <body>
 
 	<span class="clickme">Click me</span>
 
+	<a class="clickme2">Click me</a>
+
+	<button>Click me</button>
+
 </body>
 
 
 <script>
 
-	var clickme = document.querySelector(".clickme");
-	console.log(clickme)
+	var span = document.querySelector(".clickme");
+	span.addEventListener("touchstart", function() {
+		alert("SPAN");
+	});
 
-	clickme.addEventListener("touchstart", function() {
-		alert("Clicked");
+	var anchor = document.querySelector(".clickme2");
+	anchor.addEventListener("touchstart", function() {
+		alert("ANCHOR");
+	});
+
+	var button = document.querySelector("button");
+	button.addEventListener("touchstart", function() {
+		alert("BUTTON");
 	});
 
 </script>
