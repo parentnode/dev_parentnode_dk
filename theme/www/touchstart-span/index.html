@@ -11,10 +11,11 @@
 
 		body >* {
 			padding: 12px;
-			display: inline-block;
+			display: block;
 		}
 
-		a {text-decoration: none; color: initial;}
+		a {display: block; text-decoration: none; color: initial;}
+		span {display: block;}
 
 		.clickme {
 			background: red;
@@ -83,6 +84,8 @@
 
 
 <script>
+
+	// display:block and display:inline-block fixes nested touchstart event on anchor and span
 
 	var span = document.querySelector(".clickme");
 	span.addEventListener("touchstart", function(event) {
