@@ -7,26 +7,77 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<style>
+		script {display: none !important;}
 
-		span {
-			padding: 10px;
+		body >* {
+			padding: 12px;
+			display: inline-block;
+		}
+
+		a {text-decoration: none; color: initial;}
+
+		.clickme {
+			background: red;
+		}
+
+		.clickme2 {
 			background: green;
 		}
 
-		a {
-			padding: 10px;
-			background: red;
+		.clickme3 {
+			background: blue;
+		}
+
+		.clickme4 {
+			background: purple;
+		}
+
+		.clickme5 {
+			background: orange;
+		}
+
+		.clickme6 {
+			background: yellow;
+		}
+
+		.clickme7 {
+			background: black;
+			color: white;
+		}
+
+		ul {
+			list-style: none;
+			background: aqua;
+		}
+
+		.div {
+			background: brown;
 		}
 
 	</style>
 </head>
 <body>
 
-	<span class="clickme">Click me</span>
+	<span class="clickme">Span</span>
 
-	<a class="clickme2">Click me</a>
+	<a href="#" class="clickme2">Anchor</a>
 
-	<button>Click me</button>
+	<div class="div">Div</div>
+
+	<button>Button</button>
+
+	<ul><li>List element</li></ul>
+
+	<span class="clickme3"><a href="#">Anchor inside span</a></span>
+
+	<div class="clickme4"><a href="#">Anchor inside div</a></div>
+
+	<div class="clickme5"><span>Span inside Div</span></div>
+
+	<span class="clickme6"><a href="#">Span with anchor inside</a></span>
+
+	<span class="clickme7"><div>Div inside span</div></span>
+
 
 </body>
 
@@ -34,18 +85,84 @@
 <script>
 
 	var span = document.querySelector(".clickme");
-	span.addEventListener("touchstart", function() {
+	span.addEventListener("touchstart", function(event) {
 		alert("SPAN");
+
+		// event.preventDefault();
+		// event.stopPropagation();
 	});
 
 	var anchor = document.querySelector(".clickme2");
-	anchor.addEventListener("touchstart", function() {
+	anchor.addEventListener("touchstart", function(event) {
 		alert("ANCHOR");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	var div = document.querySelector(".div");
+	div.addEventListener("touchstart", function(event) {
+		alert("DIV");
+
+		// event.preventDefault();
+		// event.stopPropagation();
 	});
 
 	var button = document.querySelector("button");
-	button.addEventListener("touchstart", function() {
+	button.addEventListener("touchstart", function(event) {
 		alert("BUTTON");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	var li = document.querySelector("ul > li");
+	li.addEventListener("touchstart", function(event) {
+		alert("li inside ul");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	var nested = document.querySelector(".clickme3 > a");
+	nested.addEventListener("touchstart", function(event) {
+		alert("Anchor inside Span");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	var nested2 = document.querySelector(".clickme4 > a");
+	nested2.addEventListener("touchstart", function(event) {
+		alert("Anchor inside Div");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	var nested3 = document.querySelector(".clickme5 > span");
+	nested3.addEventListener("touchstart", function(event) {
+		alert("Span inside Div");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	var nested4 = document.querySelector(".clickme6");
+	nested4.addEventListener("touchstart", function(event) {
+		alert("Span with Anchor inside");
+
+		// event.preventDefault();
+		// event.stopPropagation();
+	});
+
+	
+	var nested5 = document.querySelector(".clickme7 > div");
+	nested5.addEventListener("touchstart", function(event) {
+		alert("Div inside span");
+
+		// event.preventDefault();
+		// event.stopPropagation();
 	});
 
 </script>
