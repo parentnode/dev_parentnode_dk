@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+
+	<style>
+		body {margin: 0;}
+	
+	</style>
+
+
+
+
+</head>
+<body>
+	
+
+	<iframe 
+		id="iframe-greenspeak"
+		src="http://mit.greenspeak.local/?dev=1&segment=desktop" 
+		frameborder="0"
+		scrolling="no"
+		sandbox="allow-same-origin allow-scripts" 
+		style="min-height: 500px; width: 100%;"
+	>
+	</iframe>
+
+
+
+	<script>
+
+		var gsiframe = document.getElementById("iframe-greenspeak");
+
+		window.addEventListener('message', function(event) {
+			// console.log(event);
+			if (event.origin == "http://mit.greenspeak.local" && typeof(event.data) === "object" && event.data.height) {
+				// console.log(event);
+
+				resizeIframe(gsiframe, event.data.height);
+			}
+		});
+
+		function resizeIframe(iframe, height) {
+			if (typeof iframe === "string") {
+				var iframe = document.querySelector(iframe);
+			}
+			iframe.style.height = height + "px";
+		}
+
+	</script>
+
+
+</body>
+</html>
