@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+
+	<style>
+		body {margin: 0;}
+	</style>
+
+	<script>
+		// Middleware - allowing iframe to get data from parent window functions
+		window.addEventListener('message', function(event) { 
+			if(event.data && event.data.id && event.data.function && window["iframe_" + event.data.function]) {
+				var response = window["iframe_" + event.data.function]();
+				event.source.postMessage({function:event.data.function, id:event.data.id, response:response}, "*");
+			}
+		});
+
+		// iframe accessible function
+		// Only function's prefixed with "iframe_" can be accessed
+		function iframe_pageScrollY() {
+			return window.pageYOffset;
+		}
+	</script>
+
+</head>
+<body>
+
+	<iframe 
+		id="iframe-1"
+		src="iframe.html" 
+		frameborder="0"
+		scrolling="no"
+		style="height: 1000px; width: 100%;"
+	>
+	</iframe>
+
+	<iframe 
+		id="iframe-2"
+		src="http://dev-parentnode-alt.local/iframe-scripting/iframe.html" 
+		frameborder="0"
+		scrolling="no"
+		style="height: 1000px; width: 100%;"
+	>
+	</iframe>
+
+	<iframe 
+		id="iframe-3"
+		src="http://sub.dev-parentnode.local/iframe-scripting/iframe.html" 
+		frameborder="0"
+		scrolling="no"
+		style="height: 1000px; width: 100%;"
+	>
+	</iframe>
+
+</body>
+</html>

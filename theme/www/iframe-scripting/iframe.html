@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script>
+		console.log(document.domain + " says hallo");
+
+		// helper functions
+		var man_random = function(min, max) {
+			return Math.round((Math.random() * (max - min)) + min);
+		}
+		var man_randomString = function(length) {
+			var key = "", i;
+
+			// default length 8
+			length = length ? length : 8;
+	
+			var pattern = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+			for(i = 0; i < length; i++) {
+				key += pattern[man_random(0,35)];
+			}
+			return key;
+		}
+
+		// Middleware to help with communication
+		window.addEventListener('message', function(event) {
+			// console.log("message received in:" + document.domain, event);
+			if(event.data && event.data.id && event.data.function && window[event.data.function+"_"+event.data.id]) {
+				window[event.data.function+"_"+event.data.id](event.data.response);
+			}
+		});
+		function requestParentFunction(function_name, handler_function) {
+			var id = man_randomString(4);
+			window[function_name + "_" + id] = handler_function;
+			parent.postMessage({function:function_name, id:id}, "*");
+		}
+
+
+		// Since this is done via postMessage, it is Async
+		// – which means you have to arrange you functions a bit differently.
+		// Opening an overlay will have to be a two step process
+		// 1st get required value(s) from parent window
+		// 2nd open overlay using these values
+		//
+		// Note: the page should also work if it is not embedded in an iframe
+		function showOverlay() {
+			// If this page IS in iframe
+			if(window.parent) {
+				requestParentFunction("pageScrollY", IFrameSafeShowOverlay)
+			}
+			// If this page is NOT in iframe
+			else {
+				IFrameSafeShowOverlay(0);
+			}
+		}
+		function IFrameSafeShowOverlay(offset) {
+
+			console.log("The window scroll offset is:" + offset);
+
+		}
+
+	</script>
+
+</head>
+
+<body>
+
+
+<a onclick="showOverlay();">Get parent window offset</a>
+
+</body>
+</html>
