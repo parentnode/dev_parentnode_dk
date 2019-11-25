@@ -37,9 +37,16 @@
 		window.addEventListener('message', function(event) {
 			// console.log(event);
 			if (event.origin == "http://mit.greenspeak.local" && typeof(event.data) === "object" && event.data.height) {
-				// console.log(event);
+				// console.log(event.data);
 
 				resizeIframe(gsiframe, event.data.height);
+			}
+			
+
+			if (event.origin == "http://mit.greenspeak.local" && typeof(event.data) === "object" && event.data.scroll) {
+				console.log(event.data);
+
+				sendScrollY(gsiframe);
 			}
 		});
 
@@ -49,6 +56,13 @@
 			}
 			iframe.style.height = height + "px";
 		}
+
+		function sendScrollY(iframe) {
+			iframe.contentWindow.postMessage({
+				"scrollY":this.scrollY
+			}, "*");
+		}
+
 
 	</script>
 
