@@ -1,15 +1,17 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<script>
+		console.log(document.domain + " says hallo");
+
+		window.addEventListener('message', function(event) { 
+			console.log(document.domain + "received updated scroll_y:" + event.data.scroll_y);
+		});
+	</script>
+</head>
+
 <body>
 	
-<script>
-	console.log("says hallo");
-
-window.parent.addEventListener('scroll', function(event) {
-	var myViewPortPos = window.parent.document.getElementById("test2").getBoundingClientRect();
-
-	console.log("iframe says:", myViewPortPos, event);
-});
-	
-</script>
 </body>
 </html>

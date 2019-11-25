@@ -37,23 +37,25 @@
 
 
 		// Since this is done via postMessage, it is Async
-		// – which means you have to arrange you functions a bit differently.
+		// – which means you have to arrange your functions a bit differently.
 		// Opening an overlay will have to be a two step process
 		// 1st get required value(s) from parent window
 		// 2nd open overlay using these values
 		//
+		// The downside to this approach is that we don't know if scroll-position changes after opening overlay
+		//
 		// Note: the page should also work if it is not embedded in an iframe
-		function showOverlay() {
+		function pageScrollY() {
 			// If this page IS in iframe
-			if(window.parent) {
-				requestParentFunction("pageScrollY", IFrameSafeShowOverlay)
+			if(window.self !== window.top) {
+				requestParentFunction("pageScrollY", IFrameSafe_pageScrollY)
 			}
 			// If this page is NOT in iframe
 			else {
-				IFrameSafeShowOverlay(0);
+				IFrameSafe_pageScrollY(0);
 			}
 		}
-		function IFrameSafeShowOverlay(offset) {
+		function IFrameSafe_pageScrollY(offset) {
 
 			console.log("The window scroll offset is:" + offset);
 
@@ -66,7 +68,7 @@
 <body>
 
 
-<a onclick="showOverlay();">Get parent window offset</a>
+<a onclick="pageScrollY();">Get parent window offset</a>
 
 </body>
 </html>
