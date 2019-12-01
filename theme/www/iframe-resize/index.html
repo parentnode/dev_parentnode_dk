@@ -5,7 +5,31 @@
 		window.addEventListener('message', function(event) { 
 			console.log(event);
 		});
-		
+
+
+
+
+		var iframe = document.getElementById("#iframe-greenspeak");
+
+		window.addEventListener('message', function(event) {
+			console.log(event);
+
+			if (event.origin == "https://www.mit.greenspeak.dk" && typeof(event.data) === "object" && event.data.height) {
+
+				console.log(event);
+
+			}
+		});
+
+		function resizeIframe(iframe, height) {
+			if (typeof iframe === "string") {
+				var iframe = document.querySelector(iframe);
+			}
+			iframe.style.height = height + "px";
+		}
+
+
+
 	</script>
 
 </head>
