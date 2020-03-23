@@ -1,0 +1,53 @@
+<html>
+<head>
+	<script src="/js/manipulator/src/u.js"></script>
+	<script src="/js/manipulator/src/u-dom.js"></script>
+	<script>
+		window.onload = function() {
+
+			// Src before allow – fullscreen disabled in Chrome 80
+			u.ae(document.body, "iframe", {
+				src: 'https://player.vimeo.com/video/338847988?autoplay=true&loop=0&autopause=0&color=f0f0ee&title=0&byline=0&portrait=0',
+				webkitallowfullscreen: true,
+				mozallowfullscreen: true,
+				allowfullscreen: true,
+				allow: "autoplay; fullscreen",
+				frameborder: 0,
+				sandbox:"allow-same-origin allow-scripts",
+				style:"display:block;",
+				width: 737,
+				height: 417,
+			});
+
+
+			// Src in the end – fullscreen works
+			u.ae(document.body, "iframe", {
+				webkitallowfullscreen: true,
+				mozallowfullscreen: true,
+				allowfullscreen: true,
+				allow: "autoplay; fullscreen",
+				frameborder: 0,
+				sandbox:"allow-same-origin allow-scripts",
+				style:"display:block;",
+				width: 737,
+				height: 417,
+				src: 'https://player.vimeo.com/video/338847988?autoplay=true&loop=0&autopause=0&color=f0f0ee&title=0&byline=0&portrait=0',
+			});
+
+		}
+	</script>
+
+</head>
+
+<body>
+
+	<script>
+		// also Works
+		document.write('<iframe src="https://player.vimeo.com/video/338847988?autoplay=true&amp;loop=0&amp;autopause=0&amp;color=f0f0ee&amp;title=0&amp;byline=0&amp;portrait=0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" allow="autoplay" frameborder="1" style="display:block;" width="737" height="417"></iframe>');
+
+	</script>
+
+<iframe src="https://player.vimeo.com/video/338847988?autoplay=true&amp;loop=0&amp;autopause=0&amp;color=f0f0ee&amp;title=0&amp;byline=0&amp;portrait=0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" allow="autoplay" frameborder="0" style="display:block;" width="737" height="417"></iframe>
+
+</body>
+</html>
