@@ -32,22 +32,39 @@
 
 	<script>
 
-		var gsiframe = document.getElementById("iframe-greenspeak");
+		var greenspeak_iframe = document.getElementById("iframe-greenspeak");
 
 		window.addEventListener('message', function(event) {
 			// console.log(event);
 			if (event.origin == "http://mit.greenspeak.local" && typeof(event.data) === "object" && event.data.height) {
 				// console.log(event.data);
 
-				resizeIframe(gsiframe, event.data.height);
+				resizeIframe(greenspeak_iframe, event.data.height);
 			}
-			
 
-			if (event.origin == "http://mit.greenspeak.local" && typeof(event.data) === "object" && event.data.scroll) {
+			if (event.origin == "http://mit.greenspeak.local" && typeof(event.data) === "object" && event.data.overflow) {
 				console.log(event.data);
 
-				sendScrollY(gsiframe);
+				switch (event.data.overflow) {
+					case "yes":
+						document.body.style.overflowY = "hidden";
+						break;
+
+					case "no":
+						document.body.style.overflowY = "auto";
+						break;
+				}
+
 			}
+		});
+
+
+		window.addEventListener('scroll', function(event) {
+			sendScrollY(greenspeak_iframe);
+		});
+
+		window.addEventListener('resize', function(event) {
+			sendWindowSize(greenspeak_iframe);
 		});
 
 		function resizeIframe(iframe, height) {
@@ -59,9 +76,24 @@
 
 		function sendScrollY(iframe) {
 			iframe.contentWindow.postMessage({
-				"scrollY":this.scrollY
+				"scrollY":window.pageYOffset
 			}, "*");
 		}
+
+		function sendWindowSize(iframe) {
+			iframe.contentWindow.postMessage({
+				"resize":true,
+				"width":window.innerWidth,
+				"height":window.innerHeight
+			}, "*");
+		}
+
+		// Send initial values
+		window.setTimeout(function() {
+			console.log("send")
+			sendWindowSize(greenspeak_iframe);
+			sendScrollY(greenspeak_iframe);
+		}, 1000);
 
 
 	</script>
